@@ -13,6 +13,9 @@ export default function createLevel() {
     }
 
     return {
+        tileWidth: tileWidth,
+        tileHeight: tileHeight,
+        tiles: tiles,
         draw: draw
     }
 }
