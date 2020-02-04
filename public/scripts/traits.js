@@ -15,31 +15,28 @@ export function createPhysics(entity, level) {
     }
 
     function update(deltaTime) {
+        entity.vel.y += GRAVITY * deltaTime;
+
         entity.pos.y += entity.vel.y;
         if (entity.vel.y) {
             collideY(level.tiles, entity)
         }
 
         entity.pos.x += entity.vel.x;
-
-        entity.vel.y += GRAVITY * deltaTime;
     }
     return {
         update: update
     }
 }
 
-export function createLevelCollider(entity, level) {
-    function update() {
-        level.tiles.forEach(tile => {
-            const tileTop = tile.pos.y * level.tileHeight;
-            const tileLeft = tile.pos.x * level.tileWidth;
-            const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
+export function createJump(entity) {
+    entity.jump = false;
 
-            if (entity.right() > tileLeft && entity.left() < tileRight && entity.bottom() > tileTop) {
-                entity.pos.y = tileTop - entity.size.y / 2;
-            }
-        });
+    function update() {
+        if (entity.jump && entity.vel.y == 0) {
+            entity.vel.y -= 15;
+        }
+        entity.jump = false;
     }
     return {
         update: update
