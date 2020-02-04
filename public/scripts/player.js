@@ -1,6 +1,7 @@
 export default function createPlayer() {
     const pos = { x: 200, y: 100 }
     const size = { x: 16, y: 32 }
+    const vel = { x: 0, y: 0 }
     const traits = [];
 
     function top() {
@@ -28,13 +29,14 @@ export default function createPlayer() {
         context.fillRect(pos.x, pos.y, 10, 10);
     }
 
-    function update() {
-        traits.forEach(trait => trait.update());
+    function update(deltaTime) {
+        traits.forEach(trait => trait.update(deltaTime));
     }
 
     return {
         pos: pos,
         size: size,
+        vel: vel,
         top: top,
         right: right,
         bottom: bottom,

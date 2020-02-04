@@ -1,6 +1,10 @@
-export function createGravity(entity) {
-    function update() {
-        entity.pos.y += 10;
+export function createPhysics(entity) {
+    const GRAVITY = 1;
+    function update(deltaTime) {
+        entity.pos.x += entity.vel.x;
+        entity.pos.y += entity.vel.y;
+
+        entity.vel.y += GRAVITY * deltaTime;
     }
     return {
         update: update
