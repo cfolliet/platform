@@ -26,7 +26,7 @@ export default function createPlayer() {
 
     function draw(context) {
         context.fillStyle = 'red';
-        context.fillRect(pos.x, pos.y, 10, 10);
+        context.fillRect(pos.x - size.x / 2, pos.y - size.y / 2, size.x, size.y);
     }
 
     function update(deltaTime) {
