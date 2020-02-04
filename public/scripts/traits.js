@@ -33,10 +33,26 @@ export function createJump(entity) {
     entity.jump = false;
 
     function update() {
-        if (entity.jump && entity.vel.y == 0) {
+        if (entity.jump == 1 && entity.vel.y == 0) {
             entity.vel.y -= 15;
         }
         entity.jump = false;
+    }
+    return {
+        update: update
+    }
+}
+
+export function createMove(entity) {
+    entity.moveRight = false;
+    entity.moveLeft = false;
+
+    function update() {
+        let vel = 0;
+        vel -= entity.moveLeft;
+        vel += entity.moveRight;
+        
+        entity.vel.x = vel * 3;
     }
     return {
         update: update
