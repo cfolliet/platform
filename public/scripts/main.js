@@ -7,9 +7,9 @@ import mapKeyboard from './keyboard.js'
 
 import { playerPosOnClick } from './debug.js'
 
-
-const renderer = createRenderer(document.getElementById('canvas'));
-const level = createLevel();
+const canvas = document.getElementById('canvas');
+const renderer = createRenderer(canvas);
+const level = createLevel(canvas);
 const player = createPlayer();
 player.addTrait(createJump(player));
 player.addTrait(createMove(player));
