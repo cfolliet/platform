@@ -1,32 +1,27 @@
 export function createPhysics(entity, level) {
     const GRAVITY = 1;
 
-    function collideY(tiles, entity) {
+    function collide(tiles, entity) {
         tiles.forEach(tile => {
             const tileTop = tile.pos.y * level.tileHeight;
             const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
             const tileLeft = tile.pos.x * level.tileWidth;
             const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
 
-            if (tileLeft < entity.right() && tileRight > entity.left() &&
-                tileTop < entity.bottom() && tileBottom > entity.top()) {
-                entity.pos.y = entity.vel.y > 0 ? tileTop - entity.size.y / 2 : tileBottom + entity.size.y / 2;
-                entity.vel.y = 0;
+            if (entity.vel.y) {
+                if (tileLeft < entity.right() && tileRight > entity.left() &&
+                    tileTop < entity.bottom() && tileBottom > entity.top()) {
+                    entity.pos.y = entity.vel.y > 0 ? tileTop - entity.size.y / 2 : tileBottom + entity.size.y / 2;
+                    entity.vel.y = 0;
+                }
+
             }
-        });
-    }
-
-    function collideX(tiles, entity) {
-        tiles.forEach(tile => {
-            const tileTop = tile.pos.y * level.tileHeight;
-            const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
-            const tileLeft = tile.pos.x * level.tileWidth;
-            const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
-
-            if (tileLeft < entity.right() && tileRight > entity.left() &&
-                tileTop < entity.bottom() && tileBottom > entity.top()) {
-                entity.pos.x = entity.vel.x > 0 ? tileLeft - entity.size.x / 2 : tileRight + entity.size.x / 2;
-                entity.vel.x = 0;
+            if (entity.vel.x) {
+                if (tileLeft < entity.right() && tileRight > entity.left() &&
+                    tileTop < entity.bottom() && tileBottom > entity.top()) {
+                    entity.pos.x = entity.vel.x > 0 ? tileLeft - entity.size.x / 2 : tileRight + entity.size.x / 2;
+                    entity.vel.x = 0;
+                }
             }
         });
     }
@@ -35,13 +30,9 @@ export function createPhysics(entity, level) {
         entity.vel.y += GRAVITY * deltaTime;
 
         entity.pos.y += entity.vel.y;
-        if (entity.vel.y) {
-            collideY(level.tiles, entity)
-        }
-
         entity.pos.x += entity.vel.x;
-        if (entity.vel.x) {
-            collideX(level.tiles, entity)
+        if (entity.vel.y || entity.vel.x) {
+            collide(level.tiles, entity)
         }
     }
     return {
