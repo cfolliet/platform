@@ -4,12 +4,29 @@ export function createPhysics(entity, level) {
     function collideY(tiles, entity) {
         tiles.forEach(tile => {
             const tileTop = tile.pos.y * level.tileHeight;
+            const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
             const tileLeft = tile.pos.x * level.tileWidth;
             const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
 
-            if (entity.right() > tileLeft && entity.left() < tileRight && entity.bottom() > tileTop) {
-                entity.pos.y = tileTop - entity.size.y / 2;
+            if (tileLeft < entity.right() && tileRight > entity.left() &&
+                tileTop < entity.bottom() && tileBottom > entity.top()) {
+                entity.pos.y = entity.vel.y > 0 ? tileTop - entity.size.y / 2 : tileBottom + entity.size.y / 2;
                 entity.vel.y = 0;
+            }
+        });
+    }
+
+    function collideX(tiles, entity) {
+        tiles.forEach(tile => {
+            const tileTop = tile.pos.y * level.tileHeight;
+            const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
+            const tileLeft = tile.pos.x * level.tileWidth;
+            const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
+
+            if (tileLeft < entity.right() && tileRight > entity.left() &&
+                tileTop < entity.bottom() && tileBottom > entity.top()) {
+                entity.pos.x = entity.vel.x > 0 ? tileLeft - entity.size.x / 2 : tileRight + entity.size.x / 2;
+                entity.vel.x = 0;
             }
         });
     }
@@ -23,6 +40,9 @@ export function createPhysics(entity, level) {
         }
 
         entity.pos.x += entity.vel.x;
+        if (entity.vel.x) {
+            collideX(level.tiles, entity)
+        }
     }
     return {
         update: update
@@ -51,7 +71,7 @@ export function createMove(entity) {
         let vel = 0;
         vel -= entity.moveLeft;
         vel += entity.moveRight;
-        
+
         entity.vel.x = vel * 3;
     }
     return {
