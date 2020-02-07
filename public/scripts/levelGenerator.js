@@ -1,6 +1,6 @@
 export default function generateLevel(width, height) {
     const minBlocks = 15
-    const maxBlocks = 40;
+    const maxBlocks = 50;
     const maxBlockWidth = 20;
     const maxBlockHeight = 5;
     const level = []
