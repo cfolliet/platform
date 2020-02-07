@@ -1,42 +1,34 @@
 export default function generateLevel(width, height) {
-    const maxLength = 20;
-    let maxTunnels = 20;
+    const minBlocks = 15
+    const maxBlocks = 40;
+    const maxBlockWidth = 20;
+    const maxBlockHeight = 5;
+    const level = []
 
-    let level = [];
-    let currentRow = Math.random() * width | 0;
-    let currentColumn = Math.random() * height | 0;
-    let allowedDirections = [[-1, 0], [1, 0], [0, -1], [0, 1]];
-    let lastDirection = [];
-    let randomDirection = null;
+    for (let x = 0; x < width; x++) {
+        level.push({ pos: { x: x, y: 0 } });
+        level.push({ pos: { x: x, y: height - 1 } });
+    }
+    for (let y = 0; y < width; y++) {
+        level.push({ pos: { x: 0, y: y } });
+        level.push({ pos: { x: width - 1, y: y } });
+    }
 
-    while (maxTunnels) {
-        do {
-            randomDirection = allowedDirections[Math.random() * allowedDirections.length | 0];
-        } while ((randomDirection[0] === -lastDirection[0] && randomDirection[1] === -lastDirection[1]) ||
-            (randomDirection[0] === lastDirection[0] && randomDirection[1] === lastDirection[1]));
+    const nbBlock = Math.max(minBlocks, Math.random() * maxBlocks | 0);
+    for (let index = 0; index < nbBlock; index++) {
+        const blockWidth = Math.random() * maxBlockWidth | 0;
+        const blockHeight = Math.random() * maxBlockHeight | 0;
+        const posX = Math.random() * width | 0;
+        const posY = Math.random() * height | 0;
 
-        let randomLength = Math.random() * maxLength | 0;
-        let tunnelLength = 0;
-
-        while (tunnelLength < randomLength) {
-            if (((currentRow === 0) && (randomDirection[0] === -1)) ||
-                ((currentColumn === 0) && (randomDirection[1] === -1)) ||
-                ((currentRow === width - 1) && (randomDirection[0] === 1)) ||
-                ((currentColumn === height - 1) && (randomDirection[1] === 1))) {
-                break;
-            } else {
-                level.push({ pos: { x: currentRow, y: currentColumn } });
-                currentRow += randomDirection[0];
-                currentColumn += randomDirection[1];
-                tunnelLength++;
+        for (let x = posX; x < posX + blockWidth; x++) {
+            for (let y = posY; y < posY + blockHeight; y++) {
+                if (!level.some(l => l.pos.x == x && l.pos.y == y)) {
+                    level.push({ pos: { x: x, y: y } });
+                }
             }
-        }
-
-        if (tunnelLength) {
-            lastDirection = randomDirection;
-            maxTunnels--;
         }
     }
 
     return level;
-}
+};
