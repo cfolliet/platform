@@ -11,7 +11,7 @@ const canvas = document.getElementById('canvas');
 const renderer = createRenderer(canvas);
 const level = createLevel(canvas);
 const player = createPlayer();
-player.addTrait(createJump(player));
+player.addTrait(createJump(player, level));
 player.addTrait(createMove(player));
 player.addTrait(createPhysics(player, level));
 

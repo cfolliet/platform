@@ -31,15 +31,39 @@ export function createPhysics(entity, level) {
         });
     }
 
+    function touch(tiles, entity) {
+        let touch = false;
+        tiles.forEach(tile => {
+            const tileTop = tile.pos.y * level.tileHeight;
+            const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
+            const tileLeft = tile.pos.x * level.tileWidth;
+            const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
+
+
+            const rightDist = entity.right() - tileLeft;
+            const leftDist = tileRight - entity.left()
+            if (tileTop < entity.bottom() && tileBottom > entity.top()
+                && (0 <= rightDist && rightDist <= 8
+                    || 0 <= leftDist && leftDist <= 8)) {
+                touch = true;
+            }
+        });
+        return touch;
+    }
+
     function update(deltaTime) {
-        entity.vel.y += GRAVITY * deltaTime;
+        if (entity.vel.y > 0 && touch(level.tiles, entity)) {
+            entity.vel.y += GRAVITY * deltaTime / 10;
+        } else {
+            entity.vel.y += GRAVITY * deltaTime;
+        }
 
         if (entity.vel.y) {
-            entity.pos.y += entity.vel.y;
+            entity.pos.y += entity.vel.y * deltaTime;
             collideY(level.tiles, entity)
         }
         if (entity.vel.x) {
-            entity.pos.x += entity.vel.x;
+            entity.pos.x += entity.vel.x * deltaTime;
             collideX(level.tiles, entity)
         }
     }
@@ -48,16 +72,47 @@ export function createPhysics(entity, level) {
     }
 }
 
-export function createJump(entity) {
+export function createJump(entity, level) {
     const JUMP_VELOCITY = 14;
     entity.jump = false;
+    entity.extraJump = false;
 
-    function update() {
-        if (entity.jump == 1 && entity.vel.y == 0) {
-            const RUN_FACTOR = (1 * Math.abs(entity.vel.x) / 3); 
-            entity.vel.y -= JUMP_VELOCITY + RUN_FACTOR;
+    function touch(tiles, entity) {
+        let touch = false;
+        tiles.forEach(tile => {
+            const tileTop = tile.pos.y * level.tileHeight;
+            const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
+            const tileLeft = tile.pos.x * level.tileWidth;
+            const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
+
+
+            const rightDist = entity.right() - tileLeft;
+            const leftDist = tileRight - entity.left()
+            if (tileTop < entity.bottom() && tileBottom > entity.top()
+                && (0 <= rightDist && rightDist <= 8
+                    || 0 <= leftDist && leftDist <= 8)) {
+                touch = true;
+            }
+        });
+        return touch;
+    }
+
+
+    function update(deltaTime) {
+        if (entity.jump == 1) {
+            if (entity.vel.y == 0) {
+                const RUN_FACTOR = (1 * Math.abs(entity.vel.x) / 3);
+                entity.vel.y -= JUMP_VELOCITY + RUN_FACTOR * deltaTime;
+                entity.extraJump = false;
+            }
+            else if (entity.extraJump == false && (entity.moveRight || entity.moveLeft) && touch(level.tiles, entity)) {
+                entity.vel.y = 0;
+                entity.vel.y -= JUMP_VELOCITY * deltaTime;
+                entity.extraJump = true;
+            }
+
+            entity.jump = false;
         }
-        entity.jump = false;
     }
     return {
         update: update
