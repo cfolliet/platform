@@ -49,11 +49,13 @@ export function createPhysics(entity, level) {
 }
 
 export function createJump(entity) {
+    const JUMP_VELOCITY = 14;
     entity.jump = false;
 
     function update() {
         if (entity.jump == 1 && entity.vel.y == 0) {
-            entity.vel.y -= 15;
+            const RUN_FACTOR = (1 * Math.abs(entity.vel.x) / 3); 
+            entity.vel.y -= JUMP_VELOCITY + RUN_FACTOR;
         }
         entity.jump = false;
     }
