@@ -25,8 +25,12 @@ export default function createPlayer() {
     }
 
     function draw(context) {
-        context.fillStyle = 'red';
+        const hightlight = (Date.now() / 500 |0) % 2 ;
+        context.fillStyle = hightlight ? '#62757c' : '#f7ebeb';
         context.fillRect(pos.x - size.x / 2, pos.y - size.y / 2, size.x, size.y);
+        
+        context.strokeStyle = '#f7ebeb';
+        context.strokeRect(pos.x - size.x / 2, pos.y - size.y / 2, size.x, size.y);
     }
 
     function update(deltaTime) {
