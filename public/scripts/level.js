@@ -3,9 +3,7 @@ import generateLevel from './levelGenerator.js'
 export default function createLevel(canvas, resources) {
     const tileWidth = 16;
     const tileHeight = 16;
-    const width = canvas.width / tileWidth;
-    const height = canvas.height / tileHeight;
-    const tiles = generateLevel(width, height);
+    const tiles = generateLevel(canvas.width, canvas.height);
     const background = resources.get('/images/background.jpg');
 
     function draw(context) {
