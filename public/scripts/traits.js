@@ -3,10 +3,10 @@ export function createPhysics(entity, level) {
 
     function collideY(tiles, entity) {
         tiles.forEach(tile => {
-            const tileTop = tile.pos.y * level.tileHeight;
-            const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
-            const tileLeft = tile.pos.x * level.tileWidth;
-            const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
+            const tileTop = tile.pos.y;
+            const tileBottom = tile.pos.y + tile.size.y;
+            const tileLeft = tile.pos.x;
+            const tileRight = tile.pos.x + tile.size.x;
 
             if (tileLeft < entity.right() && tileRight > entity.left() &&
                 tileTop < entity.bottom() && tileBottom > entity.top()) {
@@ -18,10 +18,10 @@ export function createPhysics(entity, level) {
 
     function collideX(tiles, entity) {
         tiles.forEach(tile => {
-            const tileTop = tile.pos.y * level.tileHeight;
-            const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
-            const tileLeft = tile.pos.x * level.tileWidth;
-            const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
+            const tileTop = tile.pos.y;
+            const tileBottom = tile.pos.y + tile.size.y;
+            const tileLeft = tile.pos.x;
+            const tileRight = tile.pos.x + tile.size.x;
 
             if (tileLeft < entity.right() && tileRight > entity.left() &&
                 tileTop < entity.bottom() && tileBottom > entity.top()) {
@@ -34,10 +34,10 @@ export function createPhysics(entity, level) {
     function touch(tiles, entity) {
         let touch = false;
         tiles.forEach(tile => {
-            const tileTop = tile.pos.y * level.tileHeight;
-            const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
-            const tileLeft = tile.pos.x * level.tileWidth;
-            const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
+            const tileTop = tile.pos.y;
+            const tileBottom = tile.pos.y + tile.size.y;
+            const tileLeft = tile.pos.x;
+            const tileRight = tile.pos.x + tile.size.x;
 
 
             const rightDist = entity.right() - tileLeft;
@@ -80,10 +80,10 @@ export function createJump(entity, level) {
     function touch(tiles, entity) {
         let touch = false;
         tiles.forEach(tile => {
-            const tileTop = tile.pos.y * level.tileHeight;
-            const tileBottom = tile.pos.y * level.tileHeight + level.tileHeight;
-            const tileLeft = tile.pos.x * level.tileWidth;
-            const tileRight = tile.pos.x * level.tileWidth + level.tileWidth;
+            const tileTop = tile.pos.y;
+            const tileBottom = tile.pos.y + tile.size.y;
+            const tileLeft = tile.pos.x;
+            const tileRight = tile.pos.x + tile.size.x;
 
 
             const rightDist = entity.right() - tileLeft;

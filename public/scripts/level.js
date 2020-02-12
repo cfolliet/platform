@@ -11,10 +11,10 @@ export default function createLevel(canvas, resources) {
     function draw(context) {
         context.strokeStyle = '#62757c';
         tiles.forEach(tile => {
-            const x = tile.pos.x * tileWidth;
-            const y = tile.pos.y * tileHeight;
-            const w = tileWidth;
-            const h = tileHeight;
+            const x = tile.pos.x;
+            const y = tile.pos.y;
+            const w = tile.size.x;
+            const h = tile.size.y;
 
             context.strokeRect(x, y, w, h);
             context.drawImage(background, x, y, w, h, x, y, w, h);
