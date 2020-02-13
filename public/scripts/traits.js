@@ -120,22 +120,22 @@ export function createJump(entity, level) {
 }
 
 export function createMove(entity) {
-    const FRICTION = 0.6;
+    const FRICTION = 0.5;
     const MAX_VEL_X = 15;
-    const ACCELERATION = 1.5;
+    const ACCELERATION = 8;
     entity.moveRight = false;
     entity.moveLeft = false;
 
     function update(deltaTime) {
-        let vel = 0;
-        vel -= entity.moveLeft;
-        vel += entity.moveRight;
+        let direction = 0;
+        direction -= entity.moveLeft;
+        direction += entity.moveRight;
 
-        if (vel) {
-            entity.vel.x = Math.max(Math.min((entity.vel.x + vel * deltaTime) * ACCELERATION, MAX_VEL_X), -MAX_VEL_X);
+        if (direction) {
+            entity.vel.x += ACCELERATION * direction * deltaTime;
         };
 
-        entity.vel.x = entity.vel.x * FRICTION * deltaTime;
+        entity.vel.x -= entity.vel.x * FRICTION * deltaTime;
     }
     return {
         update: update
