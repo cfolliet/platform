@@ -1,20 +1,27 @@
-export default function createTimer(update) {
-    let lastTimestamp = null;
-    
-    function run(timestamp) {
-        let deltaTime = 0;
-        if(lastTimestamp){
-            deltaTime = timestamp - lastTimestamp;
-        }
-        lastTimestamp = timestamp;
+export default function createTimer(update, step = 1 / 60) {
+    let lastTime = 0;
+    let accumulator = 0;
 
-        update(deltaTime / (1000 / 60));
+    function run(time) {
+        let deltaTime = (time - lastTime) / 1000;
+        accumulator += deltaTime;
+
+        if (accumulator > 1) {
+            accumulator = 1;
+        }
+
+        while (accumulator >= step) {
+            update(step);
+            accumulator -= step;
+        }
+
+        lastTime = time;
+
         requestAnimationFrame(run);
     }
 
-
     function start() {
-        run();
+        requestAnimationFrame(run);
     }
 
 

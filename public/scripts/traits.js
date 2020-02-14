@@ -1,5 +1,5 @@
 export function createPhysics(entity, level) {
-    const GRAVITY = 1;
+    const GRAVITY = 2000;
 
     function collideY(tiles, entity) {
         tiles.forEach(tile => {
@@ -73,7 +73,8 @@ export function createPhysics(entity, level) {
 }
 
 export function createJump(entity, level) {
-    const JUMP_VELOCITY = 14;
+    const JUMP_VELOCITY = 500;
+    const SPEED_BOOST = 0.25;
     entity.jump = false;
     entity.extraJump = false;
 
@@ -101,13 +102,12 @@ export function createJump(entity, level) {
     function update(deltaTime) {
         if (entity.jump == 1) {
             if (entity.vel.y == 0) {
-                const RUN_FACTOR = (1 * Math.abs(entity.vel.x) / 3);
-                entity.vel.y -= JUMP_VELOCITY + RUN_FACTOR * deltaTime;
+                entity.vel.y -= JUMP_VELOCITY + Math.abs(entity.vel.x) * SPEED_BOOST;
                 entity.extraJump = false;
             }
             else if (entity.extraJump == false && (entity.moveRight || entity.moveLeft) && touch(level.tiles, entity)) {
                 entity.vel.y = 0;
-                entity.vel.y -= JUMP_VELOCITY * deltaTime;
+                entity.vel.y -= JUMP_VELOCITY;
                 entity.extraJump = true;
             }
 
@@ -120,9 +120,8 @@ export function createJump(entity, level) {
 }
 
 export function createMove(entity) {
-    const FRICTION = 0.5;
-    const MAX_VEL_X = 15;
-    const ACCELERATION = 8;
+    const FRICTION = 15;
+    const ACCELERATION = 6000;
     entity.moveRight = false;
     entity.moveLeft = false;
 
