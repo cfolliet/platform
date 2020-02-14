@@ -76,10 +76,9 @@ export function createJump(entity, level) {
     const JUMP_VELOCITY = 500;
     const SPEED_BOOST = 0.25;
     entity.jump = false;
-    entity.extraJump = false;
 
     function touch(tiles, entity) {
-        let touch = false;
+        let touch = 0;
         tiles.forEach(tile => {
             const tileTop = tile.pos.y;
             const tileBottom = tile.pos.y + tile.size.y;
@@ -87,28 +86,35 @@ export function createJump(entity, level) {
             const tileRight = tile.pos.x + tile.size.x;
 
 
-            const rightDist = entity.right() - tileLeft;
-            const leftDist = tileRight - entity.left()
-            if (tileTop < entity.bottom() && tileBottom > entity.top()
-                && (0 <= rightDist && rightDist <= 8
-                    || 0 <= leftDist && leftDist <= 8)) {
-                touch = true;
+            const rightDist = tileLeft - entity.right();
+            const leftDist = entity.left() - tileRight;
+            if (tileTop < entity.bottom() && tileBottom > entity.top()) {
+                console.log(rightDist)
+                if (0 <= rightDist && rightDist <= entity.size.x) {
+                    touch = -1;
+                } else if (0 <= leftDist && leftDist <= entity.size.x) {
+                    touch = 1;
+                }
             }
         });
         return touch;
     }
 
 
-    function update(deltaTime) {
+    function update() {
         if (entity.jump == 1) {
             if (entity.vel.y == 0) {
                 entity.vel.y -= JUMP_VELOCITY + Math.abs(entity.vel.x) * SPEED_BOOST;
-                entity.extraJump = false;
+                entity.jumpCombo = 1.25
             }
-            else if (entity.extraJump == false && (entity.moveRight || entity.moveLeft) && touch(level.tiles, entity)) {
-                entity.vel.y = 0;
-                entity.vel.y -= JUMP_VELOCITY;
-                entity.extraJump = true;
+            else {
+                const touchX = touch(level.tiles, entity);
+                if (touchX) {
+                    entity.vel.x += touchX * 1000;
+                    entity.vel.y = 0;
+                    entity.vel.y -= JUMP_VELOCITY / entity.jumpCombo;
+                    entity.jumpCombo += 0.25;
+                }
             }
 
             entity.jump = false;
