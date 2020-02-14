@@ -1,7 +1,7 @@
 import createPlayer from './player.js'
 import createRenderer from './renderer.js'
 import createTimer from './timer.js'
-import { createPhysics, createJump, createMove } from './traits.js'
+import { createPhysics, createJump, createMove, createLoop } from './traits.js'
 import createLevel from './level.js'
 import mapKeyboard from './keyboard.js'
 import { loadImages } from './resourceLoader.js'
@@ -16,6 +16,7 @@ async function main(canvas) {
     player.addTrait(createJump(player, level));
     player.addTrait(createMove(player));
     player.addTrait(createPhysics(player, level));
+    player.addTrait(createLoop(player, level));
 
     mapKeyboard(player);
 

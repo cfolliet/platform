@@ -140,3 +140,28 @@ export function createMove(entity) {
         update: update
     }
 }
+
+export function createLoop(entity, level) {
+
+    function update() {
+        const output = level.output;
+        const yMargin = output.size.y / 2;
+        const xMargin = output.size.x / 2;
+        const top = output.pos.y;
+        const bottom = output.pos.y + output.size.y;
+        const left = output.pos.x;
+        const right = output.pos.x + output.size.x;
+
+        if (entity.top() >= top - yMargin && entity.bottom() <= bottom + yMargin && entity.left() >= left - xMargin && entity.right() <= right + xMargin) {
+            const input = level.input;
+            entity.pos.x = input.pos.x + level.input.size.x / 2;
+            entity.pos.y = input.pos.y + input.size.y / 2;
+            entity.vel.x = 0;
+            entity.vel.y = 0;
+        }
+    }
+
+    return {
+        update: update
+    }
+}
