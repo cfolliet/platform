@@ -36,6 +36,7 @@ export default function createLevel(canvas, resources) {
         tileWidth: tileWidth,
         tileHeight: tileHeight,
         tiles: tiles,
+        input: input,
         draw: draw
     }
 }

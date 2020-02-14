@@ -12,7 +12,7 @@ async function main(canvas) {
     const resources = await loadImages();
     const renderer = createRenderer(canvas);
     const level = createLevel(canvas, resources);
-    const player = createPlayer();
+    const player = createPlayer({ x: level.input.pos.x + level.input.size.x / 2, y: level.input.pos.y + level.input.size.y / 2 });
     player.addTrait(createJump(player, level));
     player.addTrait(createMove(player));
     player.addTrait(createPhysics(player, level));
