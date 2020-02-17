@@ -11,7 +11,7 @@ export default function createLevel(canvas, resources) {
     let time = 0;
     let bestTime = Number.MAX_VALUE;
 
-    function update(deltaTime, player){
+    function update(deltaTime, player) {
         time += deltaTime;
 
         const output = level.output;
@@ -49,11 +49,19 @@ export default function createLevel(canvas, resources) {
         context.strokeStyle = '#f7ebeb';
         context.fillRect(input.pos.x, input.pos.y, input.size.x, input.size.y)
         context.strokeRect(input.pos.x, input.pos.y, input.size.x, input.size.y);
-        
+
         context.fillStyle = '#890729';
         context.strokeStyle = '#f7ebeb';
         context.fillRect(output.pos.x, output.pos.y, output.size.x, output.size.y)
         context.strokeRect(output.pos.x, output.pos.y, output.size.x, output.size.y);
+
+        context.fillStyle = '#27291e';
+        context.fillRect(0, 0, 300, 16 * 4);
+
+        const text = `Best Time: ${bestTime | 0} || Current Time: ${time | 0}`;
+        context.font = '18px serif';
+        context.fillStyle = '#f7ebeb';
+        context.fillText(text, 32, 32);
     }
 
     return {

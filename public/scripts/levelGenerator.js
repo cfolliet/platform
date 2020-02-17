@@ -9,7 +9,7 @@ function getTiles(width, height, tileSize) {
     const maxBlockHeight = 5 * tileSize;
     const tiles = [];
 
-    tiles.push({ pos: { x: 0, y: 0 }, size: { x: width, y: tileSize * 2 } });
+    tiles.push({ pos: { x: 0, y: 0 }, size: { x: width, y: tileSize * 4 } });
     tiles.push({ pos: { x: 0, y: height - tileSize * 2 }, size: { x: width, y: tileSize * 2 } });
 
     tiles.push({ pos: { x: 0, y: 0 }, size: { x: tileSize * 2, y: height } });
