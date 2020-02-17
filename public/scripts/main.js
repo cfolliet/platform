@@ -1,4 +1,5 @@
 import createPlayer from './player.js'
+import createGhost from './ghost.js'
 import createRenderer from './renderer.js'
 import createTimer from './timer.js'
 import { createPhysics, createJump, createMove } from './traits.js'
@@ -13,6 +14,7 @@ async function main(canvas) {
     const renderer = createRenderer(canvas);
     const level = createLevel(canvas, resources);
     const player = createPlayer({ x: level.input.pos.x + level.input.size.x / 2, y: level.input.pos.y + level.input.size.y / 2 });
+    const ghost = createGhost();
     player.addTrait(createJump(player, level));
     player.addTrait(createMove(player));
     player.addTrait(createPhysics(player, level));
@@ -21,8 +23,9 @@ async function main(canvas) {
 
     function update(deltaTime) {
         player.update(deltaTime);
-        level.update(deltaTime, player);
-        renderer.draw(level, player);
+        ghost.update(deltaTime);
+        level.update(deltaTime, player, ghost);
+        renderer.draw(level, player, ghost);
     }
     const timer = createTimer(update);
     timer.start();

@@ -6,10 +6,11 @@ export default function createRenderer(canvas) {
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
     }
 
-    function draw(level, player) {
+    function draw(level, player, ghost) {
         clearBoard(context);
         level.draw(context);
         player.draw(context);
+        ghost.draw(context);
     }
 
     return {

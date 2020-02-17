@@ -9,36 +9,18 @@ export default function createLevel(canvas, resources) {
     const output = level.output;
     const background = resources.get('/images/background.jpg');
     let time = 0;
-    const best = {
-        time: Number.MAX_VALUE,
-        history: []
-    };
     let history = [];
-    const ghost = {
-        historyIndex: 0,
-        pos: { x: -1000, y: -1000 }
-    };
+    let bestTime = null;
 
-    function update(deltaTime, player) {
+    function update(deltaTime, player, ghost) {
         time += deltaTime;
 
-        if (time < best.time) {
+        if (time < ghost.duration) {
             const record = [];
             record.push(time);
             record.push(player.pos.x);
             record.push(player.pos.y);
             history.push(record);
-
-            if (best.time < Number.MAX_VALUE) {
-                let record;
-                do {
-                    record = best.history[ghost.historyIndex];
-                    ghost.historyIndex++;
-                } while (record[0] < time)
-
-                ghost.pos.x = record[1];
-                ghost.pos.y = record[2];
-            }
         }
 
         const output = level.output;
@@ -56,16 +38,13 @@ export default function createLevel(canvas, resources) {
             player.vel.x = 0;
             player.vel.y = 0;
 
-            if (time < best.time) {
-                best.time = time;
-                best.history = history.slice();
+            if (time < ghost.duration) {
+                bestTime = time;
+                ghost.reset(history.slice());
             }
 
             time = 0;
             history = [];
-            ghost.historyIndex = 0;
-            ghost.pos.x = -1000;
-            ghost.pos.y = -1000;
         }
     }
 
@@ -94,13 +73,10 @@ export default function createLevel(canvas, resources) {
         context.fillStyle = '#27291e';
         context.fillRect(0, 0, 300, 16 * 4);
 
-        const text = `Best Time: ${best.time | 0} || Current Time: ${time | 0}`;
+        const text = `Best Time: ${bestTime | 0} || Current Time: ${time | 0}`;
         context.font = '18px serif';
         context.fillStyle = '#f7ebeb';
         context.fillText(text, 32, 32);
-
-        context.strokeStyle = '#f7ebeb';
-        context.strokeRect(ghost.pos.x, ghost.pos.y, 8, 24);
     }
 
     return {
