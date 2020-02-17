@@ -89,7 +89,6 @@ export function createJump(entity, level) {
             const rightDist = tileLeft - entity.right();
             const leftDist = entity.left() - tileRight;
             if (tileTop < entity.bottom() && tileBottom > entity.top()) {
-                console.log(rightDist)
                 if (0 <= rightDist && rightDist <= entity.size.x) {
                     touch = -1;
                 } else if (0 <= leftDist && leftDist <= entity.size.x) {
@@ -142,31 +141,6 @@ export function createMove(entity) {
 
         entity.vel.x -= entity.vel.x * FRICTION * deltaTime;
     }
-    return {
-        update: update
-    }
-}
-
-export function createLoop(entity, level) {
-
-    function update() {
-        const output = level.output;
-        const yMargin = output.size.y / 2;
-        const xMargin = output.size.x / 2;
-        const top = output.pos.y;
-        const bottom = output.pos.y + output.size.y;
-        const left = output.pos.x;
-        const right = output.pos.x + output.size.x;
-
-        if (entity.top() >= top - yMargin && entity.bottom() <= bottom + yMargin && entity.left() >= left - xMargin && entity.right() <= right + xMargin) {
-            const input = level.input;
-            entity.pos.x = input.pos.x + level.input.size.x / 2;
-            entity.pos.y = input.pos.y + input.size.y / 2;
-            entity.vel.x = 0;
-            entity.vel.y = 0;
-        }
-    }
-
     return {
         update: update
     }

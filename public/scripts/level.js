@@ -8,6 +8,30 @@ export default function createLevel(canvas, resources) {
     const input = level.input;
     const output = level.output;
     const background = resources.get('/images/background.jpg');
+    let time = 0;
+    let bestTime = Number.MAX_VALUE;
+
+    function update(deltaTime, player){
+        time += deltaTime;
+
+        const output = level.output;
+        const yMargin = output.size.y / 2;
+        const xMargin = output.size.x / 2;
+        const top = output.pos.y;
+        const bottom = output.pos.y + output.size.y;
+        const left = output.pos.x;
+        const right = output.pos.x + output.size.x;
+
+        if (player.top() >= top - yMargin && player.bottom() <= bottom + yMargin && player.left() >= left - xMargin && player.right() <= right + xMargin) {
+            const input = level.input;
+            player.pos.x = input.pos.x + level.input.size.x / 2;
+            player.pos.y = input.pos.y + input.size.y / 2;
+            player.vel.x = 0;
+            player.vel.y = 0;
+            bestTime = Math.min(time, bestTime);
+            time = 0;
+        }
+    }
 
     function draw(context) {
         context.strokeStyle = '#62757c';
@@ -38,6 +62,7 @@ export default function createLevel(canvas, resources) {
         tiles: tiles,
         input: input,
         output: output,
+        update: update,
         draw: draw
     }
 }
