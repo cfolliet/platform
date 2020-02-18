@@ -1,5 +1,5 @@
-export default function createPlayer(initialPos) {
-    const pos = initialPos;
+export default function createPlayer() {
+    const pos = { x: 0, y: 0 };
     const size = { x: 8, y: 24 }
     const vel = { x: 0, y: 0 }
     const traits = [];

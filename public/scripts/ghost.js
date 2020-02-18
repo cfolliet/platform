@@ -1,7 +1,7 @@
 export default function createGhost() {
     let pos;
     let size = { x: 8, y: 24 };
-    let history;
+    let history = [];
     let historyIndex;
     let time;
     let duration;
@@ -28,9 +28,8 @@ export default function createGhost() {
         context.strokeRect(pos.x - size.x / 2, pos.y - size.y / 2, size.x, size.y);
     }
 
-    function reset(histo) {
+    function reset() {
         pos = { x: -1000, y: -1000 };
-        history = histo || history || [];
         historyIndex = 0;
         time = 0;
         duration = history.length ? history[history.length - 1][0] : Number.MAX_VALUE;
@@ -40,12 +39,17 @@ export default function createGhost() {
         return duration;
     }
 
+    function setHistory(histo) {
+        history = histo;
+    }
+
     reset();
 
     return {
         update, update,
         draw: draw,
         reset: reset,
-        getDuration: getDuration
+        getDuration: getDuration,
+        setHistory: setHistory
     }
 }

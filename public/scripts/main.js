@@ -12,22 +12,23 @@ import { playerPosOnClick } from './debug.js'
 async function main(canvas) {
     const resources = await loadImages();
     const renderer = createRenderer(canvas);
-    const level = createLevel(canvas, resources);
-    const player = createPlayer({ x: level.input.pos.x + level.input.size.x / 2, y: level.input.pos.y + level.input.size.y / 2 });
+    const player = createPlayer();
     const ghost = createGhost();
+    const level = createLevel(canvas, resources, player, ghost);
     player.addTrait(createJump(player, level));
     player.addTrait(createMove(player));
     player.addTrait(createPhysics(player, level));
 
-    mapKeyboard(player);
+    mapKeyboard(player, level);
 
     function update(deltaTime) {
         player.update(deltaTime);
         ghost.update(deltaTime);
-        level.update(deltaTime, player, ghost);
+        level.update(deltaTime);
         renderer.draw(level, player, ghost);
     }
     const timer = createTimer(update);
+    level.reset();
     timer.start();
 
     // debug

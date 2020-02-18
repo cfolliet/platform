@@ -1,6 +1,6 @@
 import generateLevel from './levelGenerator.js'
 
-export default function createLevel(canvas, resources) {
+export default function createLevel(canvas, resources, player, ghost) {
     const tileWidth = 16;
     const tileHeight = 16;
     const level = generateLevel(canvas.width, canvas.height);
@@ -14,7 +14,7 @@ export default function createLevel(canvas, resources) {
     let bestTime = null;
     let step = recordingStep;
 
-    function update(deltaTime, player, ghost) {
+    function update(deltaTime) {
         time += deltaTime;
         step += deltaTime;
 
@@ -36,22 +36,26 @@ export default function createLevel(canvas, resources) {
         const right = output.pos.x + output.size.x;
 
         if (player.top() >= top - yMargin && player.bottom() <= bottom + yMargin && player.left() >= left - xMargin && player.right() <= right + xMargin) {
-            const input = level.input;
-            player.pos.x = input.pos.x + level.input.size.x / 2;
-            player.pos.y = input.pos.y + input.size.y / 2;
-            player.vel.x = 0;
-            player.vel.y = 0;
-
             if (time < ghost.getDuration()) {
                 bestTime = time;
-                ghost.reset(history.slice());
-            } else {
-                ghost.reset();
+                ghost.setHistory(history.slice());
             }
 
-            time = 0;
-            history = [];
+            reset();
         }
+    }
+
+    function reset() {
+        const input = level.input;
+        player.pos.x = input.pos.x + level.input.size.x / 2;
+        player.pos.y = input.pos.y + input.size.y / 2;
+        player.vel.x = 0;
+        player.vel.y = 0;
+
+        time = 0;
+        history = [];
+
+        ghost.reset();
     }
 
     function draw(context) {
@@ -89,9 +93,12 @@ export default function createLevel(canvas, resources) {
         tileWidth: tileWidth,
         tileHeight: tileHeight,
         tiles: tiles,
+        player: player,
+        ghost: ghost,
         input: input,
         output: output,
         update: update,
+        reset: reset,
         draw: draw
     }
 }
