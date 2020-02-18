@@ -8,14 +8,18 @@ export default function createLevel(canvas, resources) {
     const input = level.input;
     const output = level.output;
     const background = resources.get('/images/background.jpg');
+    const recordingStep = 1 / 30;
     let time = 0;
     let history = [];
     let bestTime = null;
+    let step = recordingStep;
 
     function update(deltaTime, player, ghost) {
         time += deltaTime;
+        step += deltaTime;
 
-        if (time < ghost.duration) {
+        if (time < ghost.getDuration() && step >= recordingStep) {
+            step = 0;
             const record = [];
             record.push(time);
             record.push(player.pos.x);
@@ -38,9 +42,11 @@ export default function createLevel(canvas, resources) {
             player.vel.x = 0;
             player.vel.y = 0;
 
-            if (time < ghost.duration) {
+            if (time < ghost.getDuration()) {
                 bestTime = time;
                 ghost.reset(history.slice());
+            } else {
+                ghost.reset();
             }
 
             time = 0;

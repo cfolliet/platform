@@ -10,11 +10,11 @@ export default function createGhost() {
         time += deltaTime;
 
         if (time < duration && duration < Number.MAX_VALUE) {
-            let record;
-            do {
-                record = history[historyIndex];
+            let record = history[historyIndex];
+            while (record[0] < time) {
                 historyIndex++;
-            } while (record[0] < time)
+                record = history[historyIndex];
+            }
 
             pos.x = record[1];
             pos.y = record[2];
@@ -26,12 +26,16 @@ export default function createGhost() {
         context.strokeRect(pos.x - size.x / 2, pos.y - size.y / 2, size.x, size.y);
     }
 
-    function reset(histo = []) {
+    function reset(histo) {
         pos = { x: -1000, y: -1000 };
-        history = histo;
+        history = histo || history || [];
         historyIndex = 0;
         time = 0;
         duration = history.length ? history[history.length - 1][0] : Number.MAX_VALUE;
+    }
+
+    function getDuration() {
+        return duration;
     }
 
     reset();
@@ -40,6 +44,6 @@ export default function createGhost() {
         update, update,
         draw: draw,
         reset: reset,
-        duration: duration
+        getDuration: getDuration
     }
 }
