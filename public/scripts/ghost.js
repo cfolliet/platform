@@ -18,6 +18,8 @@ export default function createGhost() {
 
             pos.x = record[1];
             pos.y = record[2];
+        } else {
+            pos = { x: -1000, y: -1000 };
         }
     }
 
