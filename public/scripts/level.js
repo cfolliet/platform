@@ -82,9 +82,9 @@ export default function createLevel(canvas, resources, player, ghost) {
         context.strokeRect(output.pos.x, output.pos.y, output.size.x, output.size.y);
 
         context.fillStyle = '#27291e';
-        context.fillRect(0, 0, 300, 16 * 4);
+        context.fillRect(0, 0, 350, 16 * 4);
 
-        const text = `Best Time: ${bestTime | 0} || Current Time: ${time | 0}`;
+        const text = `Best Time: ${(bestTime || 0).toFixed(2)} | Current Time: ${time.toFixed(2)}`;
         context.font = '18px serif';
         context.fillStyle = '#f7ebeb';
         context.fillText(text, 32, 32);
