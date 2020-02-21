@@ -10,8 +10,8 @@ function getInput(height, tileSize) {
 }
 
 function getBlocks(width, height, tileSize) {
-    const blocksOnX = 5;
-    const blocksOnY = 3;
+    const blocksOnX = 8;
+    const blocksOnY = 6;
     const blocks = [];
     for (let x = 0; x < blocksOnX; x++) {
         for (let y = 0; y < blocksOnY; y++) {
@@ -22,10 +22,10 @@ function getBlocks(width, height, tileSize) {
 }
 
 function getTile(block) {
-    const x = block.left() + block.size.x / 3;
+    const w = Math.max(block.size.x / 4, Math.random() * block.size.x);
+    const x = block.left() + Math.random() * block.size.x / 3;
     const y = block.top() + block.size.y / 3;
-    const w = block.size.x / 3;
-    const h = block.size.y / 3;
+    const h = Math.max(block.size.y / 4, Math.random() * block.size.y);
     return { pos: { x: x, y: y }, size: { x: w, y: h } };
 }
 
