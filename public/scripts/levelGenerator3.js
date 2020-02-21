@@ -6,7 +6,7 @@ function roundToSize(n, size) {
 }
 
 function getInput(height, tileSize) {
-    return createRect(0, Math.max(tileSize * 5, Math.min(height - tileSize * 3, roundToSize(Math.random() * height | 0, tileSize))), tileSize, tileSize * 2);
+    return createRect(0, Math.max(tileSize * 5, Math.min(height - tileSize * 6, roundToSize(Math.random() * height | 0, tileSize))), tileSize, tileSize * 2);
 }
 
 function getPaths(width, height, input, tileSize) {
