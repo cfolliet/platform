@@ -1,5 +1,5 @@
 //import generateLevel from './levelGenerator2.js'
-import generateLevel from './levelGenerator3.js'
+import generateLevel from './levelGenerator4.js'
 
 export default function createLevel(canvas, resources, player, ghost) {
     const tileWidth = 16;
