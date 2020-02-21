@@ -10,14 +10,31 @@ function getInput(height, tileSize) {
 }
 
 function getPaths(width, height, input, tileSize) {
-    const maxWidth = width / 10;
+    const maxWidth = width / 5;
+    const maxHeight = height / 2;
     const paths = [];
 
     let lastPath = input;
     let processing = true;
+    let horUp = false;
+    let verUp = true;
 
     while (processing) {
-        const path = createRect(lastPath.right(), lastPath.top(), maxWidth, tileSize * 3)
+        const isVertical = paths.length % 2;
+        const w = isVertical ? tileSize * 3 : Math.max(tileSize * 3, Math.random() * maxWidth | 0);
+        const h = isVertical ? Math.max(tileSize * 3, Math.random() * maxHeight | 0) : tileSize * 3;
+        const x = lastPath.right();
+        let y = 0;
+
+        if (!isVertical) {
+            y = horUp ? lastPath.top() - h + tileSize * 3 : lastPath.bottom() - tileSize * 3;
+            horUp = ! horUp;
+        } else {
+            y = verUp ? lastPath.top() - h + tileSize * 3 : lastPath.bottom() - tileSize * 3;
+            verUp = ! verUp;
+        }
+
+        const path = createRect(x, y, w, h)
         if (path.right() >= width) {
             processing = false;
             path.size.x = width - tileSize - path.pos.x;
