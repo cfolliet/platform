@@ -26,16 +26,19 @@ function getTile(block) {
     const x = block.left() + Math.random() * block.size.x / 3;
     const y = block.top() + block.size.y / 3;
     const h = Math.max(block.size.y / 4, Math.random() * block.size.y);
-    return { pos: { x: x, y: y }, size: { x: w, y: h } };
+    return createRect(x, y, w, h);
 }
 
-function getTiles(width, height, tileSize) {
+function getTiles(width, height, tileSize, input, output) {
     const tiles = [];
 
     const blocks = getBlocks(width, height, tileSize);
 
     blocks.forEach(block => {
-        tiles.push(getTile(block));
+        const tile = getTile(block, input, output);
+        if (!collide(tile, input) && !collide(tile, output)) {
+            tiles.push(tile);
+        }
     });
 
     return tiles;
@@ -44,16 +47,16 @@ function getTiles(width, height, tileSize) {
 export default function generateLevel(width, height, tileSize = 16) {
     let tiles = [];
 
-    tiles.push({ pos: { x: 0, y: 0 }, size: { x: width, y: tileSize * 4 } });
-    tiles.push({ pos: { x: 0, y: height - tileSize * 2 }, size: { x: width, y: tileSize * 2 } });
+    tiles.push(createRect(0, 0, width, tileSize * 4));
+    tiles.push(createRect(0, height - tileSize * 2, width, tileSize * 2));
 
-    tiles.push({ pos: { x: 0, y: 0 }, size: { x: tileSize * 2, y: height } });
-    tiles.push({ pos: { x: width - tileSize * 2, y: 0 }, size: { x: tileSize * 2, y: height } });
+    tiles.push(createRect(0, 0, tileSize * 2, height));
+    tiles.push(createRect(width - tileSize * 2, 0, tileSize * 2, height));
 
     const input = getInput(height, tileSize);
     const output = createRect(width - tileSize * 3, height - input.top(), tileSize, tileSize * 2);
 
-    tiles = tiles.concat(getTiles(width, height, tileSize));
+    tiles = tiles.concat(getTiles(width, height, tileSize, input, output));
 
     return {
         tiles: tiles,
