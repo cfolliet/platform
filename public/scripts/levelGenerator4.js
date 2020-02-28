@@ -1,12 +1,15 @@
 import createRect from './rect.js'
 import { collide } from './collider.js'
+import createRandom from './random.js'
+
+const random = createRandom((new Date(Date.now())).getMinutes())
 
 function roundToSize(n, size) {
     return Math.ceil(n / size) * size;
 }
 
 function getInput(height, tileSize) {
-    return createRect(tileSize * 2, Math.max(tileSize * 5, Math.min(height - tileSize * 6, roundToSize(Math.random() * height | 0, tileSize))), tileSize, tileSize * 2);
+    return createRect(tileSize * 2, Math.max(tileSize * 5, Math.min(height - tileSize * 6, roundToSize(random() * height | 0, tileSize))), tileSize, tileSize * 2);
 }
 
 function getBlocks(width, height, tileSize) {
@@ -22,10 +25,10 @@ function getBlocks(width, height, tileSize) {
 }
 
 function getTile(block) {
-    const w = Math.max(block.size.x / 4, Math.random() * block.size.x);
-    const x = block.left() + Math.random() * block.size.x / 3;
+    const w = Math.max(block.size.x / 4, random() * block.size.x);
+    const x = block.left() + random() * block.size.x / 3;
     const y = block.top() + block.size.y / 3;
-    const h = Math.max(block.size.y / 4, Math.random() * block.size.y);
+    const h = Math.max(block.size.y / 4, random() * block.size.y);
     return createRect(x, y, w, h);
 }
 
